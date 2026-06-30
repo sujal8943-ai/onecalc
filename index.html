@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Google AdSense Script Added Below -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4676855144287790" crossorigin="anonymous"></script>
+    <title>OneCalc - Premium All-In-One Calculator Hub</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; }
+        :root {
+            --primary: #4f46e5;
+            --primary-hover: #4338ca;
+            --secondary: #0f172a;
+            --bg-main: #f8fafc;
+            --bg-card: #ffffff;
+            --text-dark: #1e293b;
+            --text-muted: #64748b;
+            --accent: #10b981;
+        }
+        body { background-color: var(--bg-main); color: var(--text-dark); padding: 0; margin: 0; display: flex; flex-direction: column; min-height: 100vh; }
+        
+        /* Header & Navigation */
+        header { background: linear-gradient(135deg, var(--secondary), #1e293b); color: white; padding: 35px 20px; text-align: center; box-shadow: 0 4px 20px rgba(0,0,0,0.1); }
+        .logo-area { display: flex; align-items: center; justify-content: center; gap: 12px; margin-bottom: 10px; }
+        .logo-icon { font-size: 32px; background: rgba(255,255,255,0.1); padding: 8px; border-radius: 50%; }
+        header h1 { font-size: 36px; font-weight: 800; letter-spacing: -0.5px; margin: 0; }
+        header p { color: #94a3b8; font-size: 16px; margin-top: 5px; }
+        
+        /* Premium Search Bar Section */
+        .search-container { max-width: 500px; margin: 25px auto 0 auto; position: relative; }
+        .search-input { width: 100%; padding: 14px 20px 14px 45px; border: none; border-radius: 30px; font-size: 16px; background: rgba(255, 255, 255, 0.15); color: white; backdrop-filter: blur(10px); transition: all 0.3s; }
+        .search-input::placeholder { color: #cbd5e1; }
+        .search-input:focus { background: white; color: var(--text-dark); outline: none; box-shadow: 0 0 20px rgba(79, 70, 229, 0.4); }
+        .search-icon { position: absolute; left: 18px; top: 16px; color: #cbd5e1; font-size: 18px; pointer-events: none; }
+
+        /* Main Grid Container Layout */
+        .container { max-width: 1100px; width: 100%; margin: 30px auto; padding: 0 20px; flex: 1; }
+        
+        /* Category Navigation / Grid of Tabs */
+        .tabs-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; margin-bottom: 35px; }
+        .tab-card { background: var(--bg-card); border: 1px solid #e2e8f0; border-radius: 16px; padding: 18px; cursor: pointer; text-align: left; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: 0 2px 4px rgba(0,0,0,0.02); }
+        .tab-card:hover { transform: translateY(-4px); box-shadow: 0 12px 20px rgba(0,0,0,0.05); border-color: var(--primary); }
+        .tab-card.active { background: linear-gradient(135deg, var(--primary), #6366f1); border-color: var(--primary); color: white; }
+        .tab-header { display: flex; align-items: center; gap: 14px; }
+        .tab-icon { font-size: 26px; padding: 10px; background: #f1f5f9; border-radius: 12px; transition: all 0.3s; }
+        .tab-card.active .tab-icon { background: rgba(255,255,255,0.2); }
+        .tab-info h3 { font-size: 16px; font-weight: 700; margin-bottom: 2px; }
+        .tab-info p { font-size: 12px; color: var(--text-muted); }
+        .tab-card.active .tab-info p { color: #e0e7ff; }
+
+        /* Calculator Content Area */
+        .calc-viewport { background: var(--bg-card); border-radius: 24px; padding: 35px; box-shadow: 0 10px 30px rgba(0,0,0,0.04); border: 1px solid #edf2f7; max-width: 650px; margin: 0 auto 40px auto; }
+        .calc-panel { display: none; animation: fadeIn 0.4s ease; }
+        .calc-panel.active { display: block; }
+        
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .panel-title { font-size: 22px; font-weight: 700; margin-bottom: 20px; display: flex; align-items: center; gap: 10px; color: var(--secondary); border-bottom: 2px solid #f1f5f9; padding-bottom: 12px; }
+        
+        /* Interactive Inputs & Button Styles */
+        .input-row { margin-bottom: 20px; }
+        .input-row label { display: block; font-weight: 600; font-size: 14px; margin-bottom: 8px; color: #475569; }
+        .input-row input, .input-row select { width: 100%; padding: 12px 16px; border: 2px solid #e2e8f0; border-radius: 12px; font-size: 16px; transition: all 0.3s; background: #f8fafc; }
+        .input-row input:focus, .input-row select:focus { outline: none; border-color: var(--primary); background: #fff; box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.1); }
+        
+        .action-btn { width: 100%; padding: 14px; background: var(--primary); color: white; border: none; border-radius: 12px; font-size: 16px; font-weight: 700; cursor: pointer; transition: all 0.3s; box-shadow: 0 4px 12px rgba(79, 70, 229, 0.25); }
+        .action-btn:hover { background: var(--primary-hover); transform: translateY(-1px); box-shadow: 0 6px 15px rgba(79, 70, 229, 0.35); }
+        
+        /* Output Cards */
+        .premium-result { margin-top: 25px; padding: 20px; background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 16px; color: #166534; }
+        .premium-result h4 { font-size: 14px; text-transform: uppercase; letter-spacing: 0.5px; color: #15803d; margin-bottom: 8px; font-weight: 700; }
+        .premium-result .value { font-size: 26px; font-weight: 800; color: #14532d; }
+        .premium-result .breakdown { font-size: 14px; color: #166534; margin-top: 8px; line-height: 1.5; padding-top: 8px; border-top: 1px dashed #bbf7d0; }
+
+        /* Basic Calc Screen & Buttons Grid */
+        .basic-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+        .btn-calc { padding: 18px; font-size: 20px; font-weight: 700; border: none; border-radius: 12px; background: #f1f5f9; color: var(--secondary); cursor: pointer; transition: all 0.2s; }
+        .btn-calc:hover { background: #e2e8f0; }
+        .btn-calc.operator { background: #ffe4e6; color: #e11d48; }
+        .btn-calc.operator:hover { background: #fecdd3; }
+        .btn-calc.action { background: var(--primary); color: white; grid-column: span 2; }
+        .btn-calc.action:hover { background: var(--primary-hover); }
+        .btn-calc.clear { background: #f3f4f6; color: #4b5563; }
+
+        /* Author Profile Section Branding */
+        .author-card { background: linear-gradient(135deg, #ffffff, #f8fafc); border: 1px solid #e2e8f0; border-radius: 20px; padding: 25px; margin: 40px auto; max-width: 500px; text-align: center; box-shadow: 0 4px 12px rgba(0,0,0,0.02); }
+        .author-avatar { width: 70px; height: 70px; background: var(--primary); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 28px; font-weight: 800; margin: 0 auto 15px auto; box-shadow: 0 4px 10px rgba(79, 70, 229, 0.3); }
+        .author-card h3 { font-size: 18px; color: var(--secondary); margin-bottom: 4px; }
+        .author-card p { font-size: 14px; color: var(--text-muted); margin-bottom: 15px; }
+        .author-contact { display: inline-flex; align-items: center; gap: 8px; background: #f1f5f9; padding: 8px 16px; border-radius: 20px; font-size: 14px; color: var(--secondary); font-weight: 600; text-decoration: none; transition: background 0.3s; }
+        .author-contact:hover { background: #e2e8f0; }
+
+        /* Premium Dark Footer */
+        footer { background: var(--secondary); color: #94a3b8; text-align: center; padding: 25px 20px; margin-top: auto; border-top: 1px solid #334155; font-size: 14px; }
+        footer strong { color: white; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo-area">
+            <span class="logo-icon">🚀</span>
+            <h1>OneCalc</h1>
+        </div>
+        <p>Premium All-In-One Smart Multi-Calculator Hub</p>
+        
+        <div class="search-container">
+            <span class="search-icon">🔍</span>
+            <input type="text" id="calcSearch" class="search-input" placeholder="Calculator search karein... (e.g. GST, BMI, Age)" oninput="filterCalculators()">
+        </div>
+    </header>
+
+    <div class="container">
+
+        <div class="tabs-grid" id="tabsGrid">
+            <div class="tab-card active" onclick="activateTab('basic-calc')" data-search="basic calculator samanya hisab clear math">
+                <div class="tab-header">
+                    <span class="tab-icon">🧮</span>
+                    <div class="tab-info"><h3>Basic Calculator</h3><p>Normal Hissab Kitaab</p></div>
+                </div>
+            </div>
+            <div class="tab-card" onclick="activateTab('age-calc')" data-search="age calculator umar janamdin dob birthday">
+                <div class="tab-header">
+                    <span class="tab-icon">🎂</span>
+                    <div class="tab-info"><h3>Age Calculator</h3><p>Umar ka pata lagayein</p></div>
+                </div>
+            </div>
+            <div class="tab-card" onclick="activateTab('bmi-calc')" data-search="bmi calculator health wazan fitness lambai height weight">
+                <div class="tab-header">
+                    <span class="tab-icon">❤️</span>
+                    <div class="tab-info"><h3>BMI Calculator</h3><p>Health aur Fitness check</p></div>
+                </div>
+            </div>
+            <div class="tab-card" onclick="activateTab('emi-calc')" data-search="emi calculator monthly kisht bank home car interest">
+                <div class="tab-header">
+                    <span class="tab-icon">💰</span>
+                    <div class="tab-info"><h3>EMI Calculator</h3><p>Monthly Home/Car Kisht</p></div>
+                </div>
+            </div>
+            <div class="tab-card" onclick="activateTab('gst-calc')" data-search="gst calculator tax tax-rate government goods services">
+                <div class="tab-header">
+                    <span class="tab-icon">📊</span>
+                    <div class="tab-info"><h3>GST Calculator</h3><p>Net & Gross Tax Hissab</p></div>
+                </div>
+            </div>
+            <div class="tab-card" onclick="activateTab('perc-calc')" data-search="percentage calculator pratishat discount ratio">
+                <div class="tab-header">
+                    <span class="tab-icon">📈</span>
+                    <div class="tab-info"><h3>Percentage</h3><p>Pratishat nikalna seekhein</p></div>
+                </div>
+            </div>
+            <div class="tab-card" onclick="activateTab('sip-calc')" data-search="sip calculator mutual fund investment savings wealth profit">
+                <div class="tab-header">
+                    <span class="tab-icon">💵</span>
+                    <div class="tab-info"><h3>SIP Calculator</h3><p>Wealth & Profit Returns</p></div>
+                </div>
+            </div>
+            <div class="tab-card" onclick="activateTab('loan-calc')" data-search="loan calculator interest byaj bank principal total">
+                <div class="tab-header">
+                    <span class="tab-icon">🏦</span>
+                    <div class="tab-info"><h3>Loan Calculator</h3><p>Byaj (Interest) calculation</p></div>
+                </div>
+            </div>
+            <div class="tab-card" onclick="activateTab('disc-calc')" data-search="discount calculator sale shopping bachat offer price">
+                <div class="tab-header">
+                    <span class="tab-icon">🏷️</span>
+                    <div class="tab-info"><h3>Discount Calc</h3><p>Shopping Offers & Savings</p></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="calc-viewport">
+            
+            <div id="basic-calc" class="calc-panel active">
+                <div class="panel-title"><span>🧮</span> Basic Standard Calculator</div>
+                <input type="text" id="display" readonly style="width:100%; padding:18px; font-size:26px; text-align:right; border:2px solid #e2e8f0; border-radius:12px; margin-bottom:15px; background:#fff; font-weight:700; color:var(--secondary);">
+                <div class="basic-grid">
+                    <button class="btn-calc clear" onclick="clearDisplay()">C</button>
+                    <button class="btn-calc operator" onclick="appendValue('/')">÷</button>
+                    <button class="btn-calc operator" onclick="appendValue('*')">×</button>
+                    <button class="btn-calc operator" onclick="appendValue('-')">−</button>
+                    <button class="btn-calc" onclick="appendValue('7')">7</button>
+                    <button class="btn-calc" onclick="appendValue('8')">8</button>
+                    <button class="btn-calc" onclick="appendValue('9')">9</button>
+                    <button class="btn-calc operator" onclick="appendValue('+')">+</button>
+                    <button class="btn-calc" onclick="appendValue('4')">4</button>
+                    <button class="btn-calc" onclick="appendValue('5')">5</button>
+                    <button class="btn-calc" onclick="appendValue('6')">6</button>
+                    <button class="btn-calc" onclick="appendValue('.')">.</button>
+                    <button class="btn-calc" onclick="appendValue('1')">1</button>
+                    <button class="btn-calc" onclick="appendValue('2')">2</button>
+                    <button class="btn-calc" onclick="appendValue('3')">3</button>
+                    <button class="btn-calc" onclick="appendValue('0')">0</button>
+                    <button class="btn-calc action" onclick="solveBasic()">=</button>
+                </div>
+            </div>
+
+            <div id="age-calc" class="calc-panel">
+                <div class="panel-title"><span>🎂</span> Premium Age Calculator</div>
+                <div class="input-row">
+                    <label>Apni Janam Tithi (DOB) Chunein:</label>
+                    <input type="date" id="dobInput">
+                </div>
+                <button class="action-btn" onclick="executeAgeCalc()">Calculate Age</button>
+                <div class="premium-result" id="ageResultBox" style="display:none;">
+                    <h4>Aapka Result:</h4>
+                    <div class="value" id="ageMainValue">-</div>
+                    <div class="breakdown" id="ageSubValue"></div>
+                </div>
+            </div>
+
+            <div id="bmi-calc" class="calc-panel">
+                <div class="panel-title"><span>❤️</span> Smart BMI Calculator</div>
+                <div class="input-row">
+                    <label>Weight / Wazan (Kilograms me):</label>
+                    <input type="number" id="bmiWeight" placeholder="e.g. 65">
+                </div>
+                <div class="input-row">
+                    <label>Height / Lambai (Centimeters me):</label>
+                    <input type="number" id="bmiHeight" placeholder="e.g. 170">
+                </div>
+                <button class="action-btn" onclick="executeBMICalc()">Calculate BMI</button>
+                <div class="premium-result" id="bmiResultBox" style="display:none;">
+                    <h4>Health Status:</h4>
+                    <div class="value" id="bmiMainValue">-</div>
+                    <div class="breakdown" id="bmiSubValue"></div>
+                </div>
+            </div>
+
+            <div id="emi-calc" class="calc-panel">
+                <div class="panel-title"><span>💰</span> Professional EMI Calculator</div>
+                <div class="input-row">
+                    <label>Loan Amount (₹ Amount):</label>
+                    <input type="number" id="emiLoan" placeholder="e.g. 500000">
+                </div>
+                <div class="input-row">
+                    <label>Interest Rate (% Per Year):</label>
+                    <input type="number" id="emiRate" step="0.01" placeholder="e.g. 8.5">
+                </div>
+                <div class="input-row">
+                    <label>Time / Tenure (Mahine me):</label>
+                    <input type="number" id="emiMonths" placeholder="e.g. 24">
+                </div>
+                <button class="action-btn" onclick="executeEMICalc()">Calculate EMI</button>
+                <div class="premium-result" id="emiResultBox" style="display:none;">
+                    <h4>Monthly Installment:</h4>
+                    <div class="value" id="emiMainValue">-</div>
+                    <div class="breakdown" id="emiSubValue"></div>
+                </div>
+            </div>
+
+            <div id="gst-calc" class="calc-panel">
+                <div class="panel-title"><span>📊</span> Accurate GST Calculator</div>
+                <div class="input-row">
+                    <label>Base Price / Amount (₹):</label>
+                    <input type="number" id="gstAmount" placeholder="e.g. 10000">
+                </div>
+                <div class="input-row">
+                    <label>GST Rate (Pratishat Slab):</label>
+                    <select id="gstRateSlab">
+                        <option value="5">5% GST</option>
+                        <option value="12">12% GST</option>
+                        <option value="18" selected>18% GST</option>
+                        <option value="28">28% GST</option>
+                    </select>
+                </div>
+                <button class="action-btn" onclick="executeGSTCalc()">Calculate Premium GST</button>
+                <div class="premium-result" id="gstResultBox" style="display:none;">
+                    <h4>GST Summary:</h4>
+                    <div class="value" id="gstMainValue">-</div>
+                    <div class="breakdown" id="gstSubValue"></div>
+                </div>
+            </div>
+
+            <div id="perc-calc" class="calc-panel">
+                <div class="panel-title"><span>📈</span> Quick Percentage Calculator</div>
+                <div class="input-row">
+                    <label>Kitna Percentage (%) nikalna hai?</label>
+                    <input type="number" id="percRate" placeholder="e.g. 15">
+                </div>
+                <div class="input-row">
+                    <label>Kiska (Total Base Amount):</label>
+                    <input type="number" id="percTotal" placeholder="e.g. 5000">
+                </div>
+                <button class="action-btn" onclick="executePercCalc()">Calculate Percentage</button>
+                <div class="premium-result" id="percResultBox" style="display:none;">
+                    <h4>Calculated Value:</h4>
+                    <div class="value" id="percMainValue">-</div>
+                </div>
+            </div>
+
+            <div id="sip-calc" class="calc-panel">
+                <div class="panel-title"><span>💵</span> Investment SIP Wealth Estimator</div>
+                <div class="input-row">
+                    <label>Monthly Investment (₹):</label>
+                    <input type="number" id="sipMonthly" placeholder="e.g. 2000">
+                </div>
+                <div class="input-row">
+                    <label>Expected Return Rate (% Annual):</label>
+                    <input type="number" id="sipRate" placeholder="e.g. 12">
+                </div>
+                <div class="input-row">
+                    <label>Investment Time (Kitne Saal?):</label>
+                    <input type="number" id="sipYears" placeholder="e.g. 10">
+                </div>
+                <button class="action-btn" onclick="executeSIPCalc()">Estimate Future Wealth</button>
+                <div class="premium-result" id="sipResultBox" style="display:none;">
+                    <h4>Estimated Maturity Value:</h4>
+                    <div class="value" id="sipMainValue">-</div>
+                    <div class="breakdown" id="sipSubValue"></div>
+                </div>
+            </div>
+
+            <div id="loan-calc" class="calc-panel">
+                <div class="panel-title"><span>🏦</span> Total Interest Loan Calculator</div>
+                <div class="input-row">
+                    <label>Principal Loan Amount (Mool Dhan ₹):</label>
+                    <input type="number" id="loanPrincipal" placeholder="e.g. 100000">
+                </div>
+                <div class="input-row">
+                    <label>Rate of Interest (% Saallana):</label>
+                    <input type="number" id="loanRate" placeholder="e.g. 10">
+                </div>
+                <div class="input-row">
+                    <label>Duration / Time (Saal me):</label>
+                    <input type="number" id="loanYears" placeholder="e.g. 5">
+                </div>
+                <button class="action-btn" onclick="executeLoanCalc()">Calculate Interest</button>
+                <div class="premium-result" id="loanResultBox" style="display:none;">
+                    <h4>Payable Summary:</h4>
+                    <div class="value" id="loanMainValue">-</div>
+                    <div class="breakdown" id="loanSubValue"></div>
+                </div>
+            </div>
+
+            <div id="disc-calc" class="calc-panel">
+                <div class="panel-title"><span>🏷️</span> Smart Store Discount Calculator</div>
+                <div class="input-row">
+                    <label>Original Price (Asli keemat ₹):</label>
+                    <input type="number" id="discPrice" placeholder="e.g. 1999">
+                </div>
+                <div class="input-row">
+                    <label>Discount Rate (% Chhoot):</label>
+                    <input type="number" id="discPercentage" placeholder="e.g. 20">
+                </div>
+                <button class="action-btn" onclick="executeDiscCalc()">Apply Discount Offer</button>
+                <div class="premium-result" id="discResultBox" style="display:none;">
+                    <h4>Offer Price Summary:</h4>
+                    <div class="value" id="discMainValue">-</div>
+                    <div class="breakdown" id="discSubValue"></div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="author-card">
+            <div class="author-avatar">SS</div>
+            <h3>Sujal Surendra Sawant</h3>
+            <p>Founder & Chief Executive of OneCalc</p>
+            <a href="mailto:sujal8943@gmail.com" class="author-contact">📩 Contact: sujal8943@gmail.com</a>
+        </div>
+
+    </div>
+
+    <footer>
+        <p>&copy; 2026 <strong>OneCalc</strong>. All Rights Reserved. | Designed & Conceptualized by <strong>Sujal Surendra Sawant</strong></p>
+    </footer>
+
+    <script>
+        function activateTab(panelId) {
+            document.querySelectorAll('.calc-panel').forEach(p => p.classList.remove('active'));
+            document.querySelectorAll('.tab-card').forEach(t => t.classList.remove('active'));
+            document.getElementById(panelId).classList.add('active');
+            
+            const cards = document.querySelectorAll('.tab-card');
+            cards.forEach(card => {
+                if(card.getAttribute('onclick').includes(panelId)){
+                    card.classList.add('active');
+                }
+            });
+        }
+
+        // Realtime Search Filtering
+        function filterCalculators() {
+            let query = document.getElementById('calcSearch').value.toLowerCase().trim();
+            let cards = document.querySelectorAll('.tab-card');
+            cards.forEach(card => {
+                let searchSpace = card.getAttribute('data-search').toLowerCase();
+                if(searchSpace.includes(query)) {
+                    card.style.display = "block";
+                } else {
+                    card.style.display = "none";
+                }
+            });
+        }
+
+        // Basic Calc Engine
+        let disp = document.getElementById('display');
+        function appendValue(v) { disp.value += v; }
+        function clearDisplay() { disp.value = ''; }
+        function solveBasic() { 
+            try { 
+                if(disp.value) {
+                    let sanitized = disp.value.replace(/[^-+*/.0-9]/g, '');
+                    disp.value = Function('"use strict";return (' + sanitized + ')')();
+                } 
+            } catch(err) { 
+                disp.value = 'Error'; 
+            } 
+        }
+
+        // Age Engine
+        function executeAgeCalc() {
+            let dob = document.getElementById('dobInput').value;
+            if(!dob) return;
+            let birth = new Date(dob);
+            let today = new Date();
+            
+            let ageInYears = today.getFullYear() - birth.getFullYear();
+            let monthDiff = today.getMonth() - birth.getMonth();
+            let dayDiff = today.getDate() - birth.getDate();
+
+            if (monthDiff < 0 || (monthDiff === 0 && dayDiff < 0)) {
+                ageInYears--;
+            }
+
+            if(ageInYears < 0) {
+                disp.value = 'Invalid Date';
+                return;
+            }
+
+            document.getElementById('ageResultBox').style.display = "block";
+            document.getElementById('ageMainValue').innerText = ageInYears + " Saal";
+            document.getElementById('ageSubValue').innerHTML = `Aapki exact umar safalta purvak <strong>${ageInYears} saal</strong> calculate kar li gayi hai.`;
+        }
+
+        // BMI Engine
+        function executeBMICalc() {
+            let w = parseFloat(document.getElementById('bmiWeight').value);
+            let h = parseFloat(document.getElementById('bmiHeight').value) / 100;
+            if(!w || !h) return;
+            let bmi = (w / (h * h)).toFixed(2);
+            let status = bmi < 18.5 ? "Underweight (Kam Wazan) ⚠️" : bmi < 24.9 ? "Normal Weight ✅" : "Overweight ⚠️";
+            document.getElementById('bmiResultBox').style.display = "block";
+            document.getElementById('bmiMainValue').innerText = bmi;
+            document.getElementById('bmiSubValue').innerText = `Status: ${status}`;
+        }
+
+        // EMI Engine
+        function executeEMICalc() {
+            let p = parseFloat(document.getElementById('emiLoan').value);
+            let annualRate = parseFloat(document.getElementById('emiRate').value);
+            let n = parseInt(document.getElementById('emiMonths').value);
+            if(!p || isNaN(annualRate) || !n) return;
+
+            let emi = 0;
+            if (annualRate === 0) {
+                emi = p / n;
+            } else {
+                let rate = annualRate / 12 / 100;
+                emi = (p * rate * Math.pow(1+rate, n)) / (Math.pow(1+rate, n) - 1);
+            }
+
+            document.getElementById('emiResultBox').style.display = "block";
+            document.getElementById('emiMainValue').innerText = "₹" + emi.toFixed(2) + " / Mahina";
+            document.getElementById('emiSubValue').innerText = `Kul Payable Amount: ₹${(emi * n).toFixed(2)}`;
+        }
+
+        // GST Engine
+        function executeGSTCalc() {
+            let amt = parseFloat(document.getElementById('gstAmount').value);
+            let slab = parseFloat(document.getElementById('gstRateSlab').value);
+            if(!amt) return;
+            let tax = (amt * slab) / 100;
+            document.getElementById('gstResultBox').style.display = "block";
+            document.getElementById('gstMainValue').innerText = "₹" + (amt + tax).toFixed(2);
+            document.getElementById('gstSubValue').innerText = `Tax Amount: ₹${tax.toFixed(2)}`;
+        }
+
+        // Percentage
+        function executePercCalc() {
+            let r = parseFloat(document.getElementById('percRate').value);
+            let t = parseFloat(document.getElementById('percTotal').value);
+            if(isNaN(r) || !t) return;
+            document.getElementById('percResultBox').style.display = "block";
+            document.getElementById('percMainValue').innerText = ((r * t) / 100).toFixed(2);
+        }
+
+        // SIP Engine
+        function executeSIPCalc() {
+            let m = parseFloat(document.getElementById('sipMonthly').value);
+            let annualRate = parseFloat(document.getElementById('sipRate').value);
+            let years = parseInt(document.getElementById('sipYears').value);
+            if(!m || !annualRate || !years) return;
+            
+            let r = annualRate / 12 / 100;
+            let y = years * 12;
+            let fv = m * ((Math.pow(1 + r, y) - 1) / r) * (1 + r);
+            
+            document.getElementById('sipResultBox').style.display = "block";
+            document.getElementById('sipMainValue').innerText = "₹" + Math.round(fv).toLocaleString('en-IN');
+            document.getElementById('sipSubValue').innerText = `Invested Amount: ₹${(m * y).toLocaleString('en-IN')}`;
+        }
+
+        // Loan Interest
+        function executeLoanCalc() {
+            let p = parseFloat(document.getElementById('loanPrincipal').value);
+            let r = parseFloat(document.getElementById('loanRate').value);
+            let y = parseFloat(document.getElementById('loanYears').value);
+            if(!p || isNaN(r) || !y) return;
+            let i = (p * r * y) / 100;
+            document.getElementById('loanResultBox').style.display = "block";
+            document.getElementById('loanMainValue').innerText = "₹" + (p + i).toLocaleString('en-IN');
+            document.getElementById('loanSubValue').innerText = `Interest (Byaj): ₹${i.toLocaleString('en-IN')}`;
+        }
+
+        // Discount Engine
+        function executeDiscCalc() {
+            let orig = parseFloat(document.getElementById('discPrice').value);
+            let rate = parseFloat(document.getElementById('discPercentage').value);
+            if(!orig || isNaN(rate)) return;
+            let bachat = (orig * rate) / 100;
+            document.getElementById('discResultBox').style.display = "block";
+            document.getElementById('discMainValue').innerText = "₹" + (orig - bachat).toFixed(2);
+            document.getElementById('discSubValue').innerText = `Total Savings: ₹${bachat.toFixed(2)}`;
+        }
+    </script>
+</body>
+</html>
